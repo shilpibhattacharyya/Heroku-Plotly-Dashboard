@@ -43,7 +43,9 @@ venv
 ```
 
 #### Procfile
-```web: gunicorn app:server
+```
+
+web: gunicorn app:server
 ```
 (Note that app refers to the filename app.py. server refers to the variable server inside that file).
 #### requirements.txt
