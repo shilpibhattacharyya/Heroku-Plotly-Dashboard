@@ -29,21 +29,26 @@ You will also need a new dependency, gunicorn, for deploying the app:
 $ pip install gunicorn
 ```
 ## Step 3. Initialize the folder with a sample app (app.py), a .gitignore file, requirements.txt, and a Procfile for deployment
-```
+
 Create the following files in your project folder:
 
-app.py
+#### app.py
 
-.gitignore
+#### .gitignore
+```
 venv
 *.pyc
 .DS_Store
 .env
-Procfile
-web: gunicorn app:server
+```
+
+#### Procfile
+```web: gunicorn app:server```
 (Note that app refers to the filename app.py. server refers to the variable server inside that file).
-requirements.txt
+#### requirements.txt
+
 requirements.txt describes your Python dependencies. You can fill this file in automatically with:
+```
 $ pip freeze > requirements.txt
 ```
 ## Step 4. Initialize Heroku, add files to Git, and deploy
