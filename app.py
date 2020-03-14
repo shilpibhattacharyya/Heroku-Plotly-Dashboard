@@ -42,6 +42,9 @@ df=pd.read_csv(url)
 #df = pd.read_csv('data/coronavirus.csv', index_col=False, header=0)
 df.rename(columns = {'Province/State':'State', 'Country/Region':'Country'}, inplace = True)
 
+
+
+
 countries_list=list(df.Country.unique())
 d = {k:v for k,v in zip(countries_list,countries_list)}
 result = [{"label": k, "value": v} for k,v in d.items()]
@@ -52,10 +55,16 @@ df_recov.rename(columns = {'Province/State':'State', 'Country/Region':'Country'}
 
 
 
+
 cols_to_sum = [col for col in df.columns if '/20' in col] 
 #d = datetime. datetime. today()
 
 df['total_cases'] = df[datetime.strftime(datetime.now() - timedelta(days=1), '%-m/%-d/%y')]
+# df_death=df_death.sort_values(by=['total_cases'])
+# df_recov=df_recov.sort_values(by=['total_cases'])
+df.sort_values(by=['total_cases'],ascending=False, inplace=True)
+
+df_25=df[:100]
 #df['total_cases'] = df[cols_to_sum].sum(axis=1)  # assigned to a column
 
 scl = [0,"rgb(150,0,90)"],[0.125,"rgb(0, 0, 200)"],[0.25,"rgb(0, 25, 255)"],\
@@ -87,6 +96,8 @@ app.layout = html.Div(children=[
         multi=True
         
     ),
+    dcc.Checklist(id='select-all',
+                  options=[{'label': 'Select All', 'value': 1}], value=result),
     html.Div(id='tabs-content-example')
 
  ])
@@ -165,8 +176,8 @@ def update_output(value):
         id='example-graph1',
         
         figure=go.Figure(data=[go.Bar(
-            x=df.loc[df['Country'].isin(value)]['State'].tolist(), y=df.loc[df['Country'].isin(value)]['total_cases'].tolist(),
-            text=df.loc[df['Country'].isin(value)]['total_cases'].tolist(),
+            x=df_25.loc[df_25['Country'].isin(value)]['State'].tolist(), y=df_25.loc[df_25['Country'].isin(value)]['total_cases'].tolist(),
+            text=df_25.loc[df_25['Country'].isin(value)]['total_cases'].tolist(),
             textposition='auto',
             #layout=go.Layout(barmode='group',title="Coronavirus Infection across Mainland China")
             #title='Coronavirus Infection across Mainland China'
@@ -191,8 +202,8 @@ def update_output(value):
                 figure={
                     'data': [                          
                         go.Pie(                                        
-                            labels=list(df.loc[df['Country'].isin(value)]['State']),
-                            values=list(df.loc[df['Country'].isin(value)]['total_cases']),  
+                            labels=list(df_25.loc[df_25['Country'].isin(value)]['State']),
+                            values=list(df_25.loc[df_25['Country'].isin(value)]['total_cases']),  
                             hoverinfo='label+value+percent'                                     
                             )                              
                         ],
